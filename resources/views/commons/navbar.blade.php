@@ -8,8 +8,9 @@
         
         <div class="collapse navbar-collapse" id="nav-bar">
             <ul class="navbar-nav mr-auto"></ul>
-            <ul class="navbar-nav">
-                <li class="nav-item"><a href="#" class="nav-link">Signup</a></li>
+            {{-- ulを二つ書かずとも、二つ目のulにml-autoと記述すれば、一つ目のulが無くても似たように出来る --}}
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">{!! link_to_route("signup.get","Signup",[],["class" => "nav-link"]) !!}</li>
                 <li class="nav-item"><a href="#" class="nav-link">Login</a></li>
             </ul>
         </div>
