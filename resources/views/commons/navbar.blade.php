@@ -10,8 +10,20 @@
             <ul class="navbar-nav mr-auto"></ul>
             {{-- ulを二つ書かずとも、二つ目のulにml-autoと記述すれば、一つ目のulが無くても似たように出来る --}}
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">{!! link_to_route("signup.get","Signup",[],["class" => "nav-link"]) !!}</li>
-                <li class="nav-item"><a href="#" class="nav-link">Login</a></li>
+                @if (Auth::check())
+                    <li class="nav-item"><a href="#" class="nav-link">Users</a></li>
+                    <li class="nav-item dropdown">
+                        <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ Auth::user()->name }}</a>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <li class="dropdown-item"><a href="#">My profile</a></li>
+                            <li class="dropdown-divider"></li>
+                            <li class="dropdown-item">{!! link_to_route("logout.get","Logout") !!}</li>
+                        </ul>
+                    </li>
+                @else    
+                    <li class="nav-item">{!! link_to_route("signup.get","Signup",[],["class" => "nav-link"]) !!}</li>
+                    <li class="nav-item">{!! link_to_route("login","Login",[],["class" => "nav-link"]) !!}</li>
+                @endif
             </ul>
         </div>
     </nav>
