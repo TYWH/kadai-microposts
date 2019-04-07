@@ -12,7 +12,7 @@ class MicropostsController extends Controller
         if (\Auth::check()) {
         // \Auth の　\ は何のために入っている？
             $user = \Auth::user();
-            $microposts = $user->microposts()->orderBy("created_at","desc")->paginate(10);
+            $microposts = $user->feed_microposts()->orderBy("created_at","desc")->paginate(10);
             
             $data = [
                 "user" => $user,
