@@ -27,6 +27,8 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
     
+    //一対多、多対多の関係を示すメソッド
+    
     public function microposts()
     {
         return $this->hasMany(Micropost::class);
@@ -41,6 +43,13 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(User::class,'user_follow','follow_id','user_id')->withTimestamps();
     }
+    
+    public function favorites()
+    {
+        return $this->belongsToMany(Micropost::class,'favorites','user_id','microposts_id')->withTimestamps();
+    }
+    
+    //フォロー、アンフォローを実行するメソッド
     
     public function follow($userId)
     {
@@ -72,6 +81,42 @@ class User extends Authenticatable
     {
         return $this->followings()->where('follow_id',$userId)->exists();
     }
+    
+    //ふぁぼ、ふぁぼ解除のメソッド
+    
+    public function favorite($micropostId)
+    {
+        //重複ふぁぼを避ける。true,falseは見た目上の分かりやすさと、今後の拡張の為に付けてある。
+        $exist = $this->is_favorite($micropostId);
+        
+        if ($exist) {
+            return false;
+        } else {
+            $this->favorites()->attach($micropostId);
+            return true;
+        };
+    }
+    
+    public function unfavorite($micropostId)
+    {
+        //重複ふぁぼを避ける。true,falseは見た目上の分かりやすさと、今後の拡張の為に付けてある
+        $exist = $this->is_favorite($micropostId);
+        
+        if ($exist) {
+            $this->favorites()->detach($micropostId);
+            return true;
+        } else {
+            return false;
+        };
+        
+    }
+    
+    public function is_favorite($micropostId)
+    {
+        return $this->favorites()->where('microposts_id',$micropostId)->exists();
+    }
+    
+    //タイムライン表示のメソッド
     
     public function feed_microposts()
     {

@@ -3,7 +3,7 @@
         @foreach ($users as $user)
             <li class="media">
                 <img class="mr-2 rounded" src="{{ Gravatar::src($user->wmail, 50) }}" alt="">
-                <div class="medi-body">
+                <div class="media-body">
                     <div>
                         {{ $user->name }}
                     </div>
